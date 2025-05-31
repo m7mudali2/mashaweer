@@ -4,14 +4,17 @@ workflows:
     max_build_duration: 60
     environment:
       node: 18.16.0
-      java: 11
+      java: openjdk11
       xcode: latest
     scripts:
       - name: Install dependencies
-        script: npm ci
+        script: npm install
 
       - name: Build web assets
         script: npm run build
+
+      - name: Check dist directory content
+        script: ls -la dist
 
       - name: Sync Capacitor plugins and copy web assets
         script: npx cap sync
@@ -19,20 +22,13 @@ workflows:
       - name: Build Android
         script: |
           npx cap copy android
-          cd android
-          ./gradlew assembleRelease
+          cd android && ./gradlew assembleRelease
 
       - name: Build iOS
         script: |
           npx cap copy ios
-          cd ios/App
-          xcodebuild -workspace App.xcworkspace -scheme App -configuration Release -sdk iphoneos clean build CODE_SIGN_STYLE=Automatic
+          cd ios/App && xcodebuild -workspace App.xcworkspace -scheme App -configuration Release -sdk iphoneos clean build CODE_SIGN_STYLE=Automatic
 
     artifacts:
       - android/app/build/outputs/apk/release/app-release.apk
       - ios/App/build/Release-iphoneos/App.app
-
-    publishing:
-      email:
-        recipients:
-          - m7mudali@gmail.com
