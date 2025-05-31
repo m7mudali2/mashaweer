@@ -4,7 +4,7 @@ workflows:
     max_build_duration: 60
     environment:
       node: 18.16.0
-      java: 11
+      java: openjdk11
       xcode: latest
     scripts:
       - name: Install dependencies
@@ -23,8 +23,9 @@ workflows:
         script: |
           npx vite build
 
-      - name: Sync Capacitor plugins and copy web assets
+      - name: Fix capacitor permissions and sync
         script: |
+          chmod +x ./node_modules/.bin/cap || true
           npx cap sync
 
       - name: Build Android APK
