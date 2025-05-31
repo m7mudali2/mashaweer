@@ -1,6 +1,6 @@
 workflows:
   build-app:
-    name: Build iOS and Android
+    name: Build App
     max_build_duration: 60
     environment:
       node: 18.16.0
@@ -9,7 +9,11 @@ workflows:
     scripts:
       - name: Install dependencies
         script: |
-          npm install --legacy-peer-deps
+          npm install
+
+      - name: Rebuild esbuild to ensure correct binary
+        script: |
+          npm rebuild esbuild
 
       - name: Fix vite permissions
         script: |
@@ -23,14 +27,16 @@ workflows:
         script: |
           npx cap sync
 
-      - name: Build Android
+      - name: Build Android APK
         script: |
-          cd android && ./gradlew assembleRelease
+          cd android
+          ./gradlew assembleRelease
 
-      - name: Build iOS
+      - name: Build iOS App
         script: |
           npx cap copy ios
-          cd ios/App && xcodebuild -workspace App.xcworkspace -scheme App -configuration Release -sdk iphoneos clean build CODE_SIGN_STYLE=Automatic
+          cd ios/App
+          xcodebuild -workspace App.xcworkspace -scheme App -configuration Release -sdk iphoneos clean build CODE_SIGN_STYLE=Automatic
 
     artifacts:
       - android/app/build/outputs/apk/release/app-release.apk
