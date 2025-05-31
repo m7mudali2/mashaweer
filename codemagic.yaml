@@ -1,0 +1,41 @@
+workflows:
+  build:
+    name: Build iOS and Android
+    max_build_duration: 60
+    environment:
+      # استخدم إصدار Node.js مناسب
+      node: 18.16.0
+      # إصدار Java المناسب للـ Android build
+      java: openjdk11
+      # Xcode version (يحدد نسخة Xcode على Codemagic لبناء iOS)
+      xcode: latest
+      # Flutter غير مستخدم هنا لذلك حذفناه
+    scripts:
+      - name: Install dependencies
+        script: |
+          npm install
+      - name: Build web assets
+        script: |
+          npm run build
+      - name: Sync Capacitor plugins and copy web assets
+        script: |
+          npx cap sync
+      - name: Build Android
+        script: |
+          npx cap copy android
+          cd android && ./gradlew assembleRelease
+      - name: Build iOS
+        script: |
+          npx cap copy ios
+          cd ios/App && xcodebuild -workspace App.xcworkspace -scheme App -configuration Release -sdk iphoneos clean build CODE_SIGN_STYLE=Automatic
+
+    artifacts:
+      - android/app/build/outputs/apk/release/app-release.apk
+      - ios/App/build/Release-iphoneos/App.app
+
+    publishing:
+      email:
+        recipients:
+          - your-email@example.com
+        on_build_success: true
+        on_build_failure: true
