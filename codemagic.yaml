@@ -37,5 +37,4 @@ workflows:
       email:
         recipients:
           - your-email@example.com
-        on_build_success: true
-        on_build_failure: true
+
