@@ -4,7 +4,7 @@ workflows:
     max_build_duration: 60
     environment:
       node: 18.16.0
-      java: openjdk-11    # تم تعديل هذا السطر
+      java: 11
       xcode: latest
     scripts:
       - name: Install dependencies
