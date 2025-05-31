@@ -1,0 +1,155 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 220 20% 96%; /* Light Mint Green */
+    --foreground: 220 10% 10%; /* Dark Gray for text */
+
+    --card: 220 20% 100%; /* White */
+    --card-foreground: 220 10% 10%;
+
+    --popover: 220 20% 100%;
+    --popover-foreground: 220 10% 10%;
+
+    --primary: 150 55% 50%; /* Vibrant Green */
+    --primary-foreground: 0 0% 100%; /* White */
+
+    --secondary: 150 40% 70%; /* Lighter Mint/Green Accent */
+    --secondary-foreground: 220 10% 10%;
+
+    --muted: 220 15% 80%; /* Light Gray */
+    --muted-foreground: 220 10% 40%; /* Medium Gray */
+
+    --accent: 150 60% 40%; /* Darker Green for accents */
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 70% 50%; /* Red */
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 15% 85%; /* Light Gray Border */
+    --input: 220 15% 88%;
+    --ring: 150 55% 50%; /* Vibrant Green for focus rings */
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    /* Potentially define dark mode colors here if needed later */
+    --background: 220 10% 10%;
+    --foreground: 220 20% 96%;
+
+    --card: 220 10% 15%;
+    --card-foreground: 220 20% 96%;
+
+    --popover: 220 10% 15%;
+    --popover-foreground: 220 20% 96%;
+
+    --primary: 150 55% 55%;
+    --primary-foreground: 220 10% 5%;
+
+    --secondary: 150 40% 30%;
+    --secondary-foreground: 220 20% 96%;
+
+    --muted: 220 10% 25%;
+    --muted-foreground: 220 15% 70%;
+
+    --accent: 150 60% 45%;
+    --accent-foreground: 220 10% 5%;
+
+    --destructive: 0 60% 45%;
+    --destructive-foreground: 220 20% 96%;
+
+    --border: 220 10% 20%;
+    --input: 220 10% 23%;
+    --ring: 150 55% 55%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+    direction: rtl; /* Set default direction to RTL */
+  }
+  body {
+    @apply bg-background text-foreground;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  /* Ensure mapbox controls are LTR as they are not fully RTL compatible */
+  .mapboxgl-ctrl-group {
+    direction: ltr !important;
+  }
+  .mapboxgl-ctrl-attrib {
+    direction: ltr !important;
+  }
+  .mapboxgl-popup-content {
+    direction: rtl !important; /* Ensure popup content is RTL */
+    text-align: right;
+  }
+  .mapboxgl-popup-close-button {
+    left: 5px !important; /* Adjust close button for RTL */
+    right: auto !important;
+  }
+  /* Custom class for driver popups if more specific styling is needed */
+  .driver-custom-popup .mapboxgl-popup-content {
+      padding: 0; /* Remove default padding if DriverMapPopup handles it */
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      border-radius: 8px; /* Match card radius */
+  }
+
+}
+
+/* Custom scrollbar (optional) */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  @apply bg-background;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-muted rounded;
+}
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-muted-foreground;
+}
+
+/* Map Marker Styles */
+.user-marker {
+  background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23059669" width="24px" height="24px"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>');
+  background-size: cover;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.3); /* Primary color with opacity */
+}
+
+.driver-marker {
+  background-size: cover;
+  background-position: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid hsl(var(--primary));
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+/* Animation for slide-in-up */
+@keyframes slideInUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-in-up {
+  animation: slideInUp 0.3s ease-out forwards;
+}
