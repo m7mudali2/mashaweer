@@ -1,22 +1,19 @@
 workflows:
   build-app:
-    name: Build Mashaweer App
-    instance_type: mac_mini_m1
+    name: Build iOS and Android
     max_build_duration: 60
     environment:
-      vars:
-        PACKAGE_MANAGER: npm
-        NODE_VERSION: 18.16.0
-      node: $NODE_VERSION
-      java: 17
+      node: 18.16.0
+      java: 11
+      xcode: latest
     scripts:
       - name: Install dependencies
         script: |
           npm install --legacy-peer-deps
 
-      - name: Rebuild esbuild (for Apple Silicon compatibility)
+      - name: Fix vite permissions
         script: |
-          npm rebuild esbuild
+          chmod +x ./node_modules/.bin/vite || true
 
       - name: Build web assets
         script: |
@@ -28,9 +25,13 @@ workflows:
 
       - name: Build Android
         script: |
-          cd android
-          ./gradlew assembleRelease
+          cd android && ./gradlew assembleRelease
+
+      - name: Build iOS
+        script: |
+          npx cap copy ios
+          cd ios/App && xcodebuild -workspace App.xcworkspace -scheme App -configuration Release -sdk iphoneos clean build CODE_SIGN_STYLE=Automatic
 
     artifacts:
-      - android/app/build/outputs/**/*.apk
-      - dist/**
+      - android/app/build/outputs/apk/release/app-release.apk
+      - ios/App/build/Release-iphoneos/App.app
