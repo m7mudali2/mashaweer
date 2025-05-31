@@ -8,22 +8,31 @@ workflows:
       xcode: latest
     scripts:
       - name: Install dependencies
-        script: |
-          npm install
+        script: npm ci
+
       - name: Build web assets
-        script: |
-          npm run build
+        script: npm run build
+
       - name: Sync Capacitor plugins and copy web assets
-        script: |
-          npx cap sync
+        script: npx cap sync
+
       - name: Build Android
         script: |
           npx cap copy android
-          cd android && ./gradlew assembleRelease
+          cd android
+          ./gradlew assembleRelease
+
       - name: Build iOS
         script: |
           npx cap copy ios
-          cd ios/App && xcodebuild -workspace App.xcworkspace -scheme App -configuration Release -sdk iphoneos clean build CODE_SIGN_STYLE=Automatic
+          cd ios/App
+          xcodebuild -workspace App.xcworkspace -scheme App -configuration Release -sdk iphoneos clean build CODE_SIGN_STYLE=Automatic
+
     artifacts:
       - android/app/build/outputs/apk/release/app-release.apk
       - ios/App/build/Release-iphoneos/App.app
+
+    publishing:
+      email:
+        recipients:
+          - m7mudali@gmail.com
