@@ -3,13 +3,9 @@ workflows:
     name: Build iOS and Android
     max_build_duration: 60
     environment:
-      # استخدم إصدار Node.js مناسب
       node: 18.16.0
-      # إصدار Java المناسب للـ Android build
-      java: openjdk11
-      # Xcode version (يحدد نسخة Xcode على Codemagic لبناء iOS)
+      java: openjdk-11    # تم تعديل هذا السطر
       xcode: latest
-      # Flutter غير مستخدم هنا لذلك حذفناه
     scripts:
       - name: Install dependencies
         script: |
@@ -28,13 +24,6 @@ workflows:
         script: |
           npx cap copy ios
           cd ios/App && xcodebuild -workspace App.xcworkspace -scheme App -configuration Release -sdk iphoneos clean build CODE_SIGN_STYLE=Automatic
-
     artifacts:
       - android/app/build/outputs/apk/release/app-release.apk
       - ios/App/build/Release-iphoneos/App.app
-
-    publishing:
-      email:
-        recipients:
-          - your-email@example.com
-
