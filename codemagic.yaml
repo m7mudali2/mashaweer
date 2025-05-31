@@ -3,7 +3,7 @@ workflows:
     name: Build App
     max_build_duration: 60
     environment:
-      node: 18.16.0
+      node: 20.11.1
       java: 11
       xcode: latest
     scripts:
