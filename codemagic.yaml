@@ -6,12 +6,21 @@ workflows:
       node: 20.11.1
       java: 21
       xcode: latest
+      cocoapods: default
+      vars:
+        APP_STORE_KEY_ID: Encrypted(95D729Q7YL)
+        APP_STORE_ISSUER_ID: Encrypted(84a94fa1-dd02-4c8f-9306-bdbe884026dc)
+        APP_STORE_KEY_FILE: AuthKey_95D729Q7YL.p8
+    cache:
+      cache_paths:
+        - ~/.npm
+        - ~/.gradle/caches
     scripts:
       - name: Install dependencies
         script: |
           npm install
 
-      - name: Rebuild esbuild to ensure correct binary
+      - name: Rebuild esbuild
         script: |
           npm rebuild esbuild
 
@@ -23,7 +32,7 @@ workflows:
         script: |
           npx vite build
 
-      - name: Fix capacitor permissions and sync
+      - name: Capacitor sync
         script: |
           chmod +x ./node_modules/.bin/cap || true
           npx cap sync
@@ -38,7 +47,16 @@ workflows:
         script: |
           npx cap copy ios
           cd ios/App
-          xcodebuild -workspace App.xcworkspace -scheme App -configuration Release -sdk iphoneos clean build CODE_SIGN_STYLE=Automatic
+          xcodebuild -workspace App.xcworkspace -scheme App -configuration Release -sdk iphoneos CODE_SIGN_STYLE=Automatic DEVELOPMENT_TEAM=<64UP78W834> | tee build.log
+
+      - name: Publish to App Store
+        script: |
+          app-store-connect publish \
+            --api-key-path=$CM_SECURE_FILES/$APP_STORE_KEY_FILE \
+            --key-id=$APP_STORE_KEY_ID \
+            --issuer-id=$APP_STORE_ISSUER_ID \
+            --bundle-id=online.mashaweer \
+            --path ios/App/build/Release-iphoneos/App.app
 
     artifacts:
       - android/app/build/outputs/apk/release/app-release.apk
