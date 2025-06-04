@@ -8,7 +8,9 @@ workflows:
       xcode: latest
       cocoapods: default
       vars:
-        APP_STORE_KEY_FILE: AuthKey_95D729Q7YL.p8
+        APP_STORE_KEY_ID: Encrypted(23VR4HRBCT)
+        APP_STORE_ISSUER_ID: Encrypted(84a94fa1-dd02-4c8f-9306-bdbe884026dc)
+        APP_STORE_KEY_FILE: AuthKey_23VR4HRBCT.p8
     cache:
       cache_paths:
         - ~/.npm
@@ -54,7 +56,9 @@ workflows:
             --key-id=$APP_STORE_KEY_ID \
             --issuer-id=$APP_STORE_ISSUER_ID \
             --bundle-id=online.mashaweer \
-            --path ios/App/build/Release-iphoneos/App.app
+            --path ios/App/build/Release-iphoneos/App.app \
+            --app-store \
+            --platform IOS
 
     artifacts:
       - android/app/build/outputs/apk/release/app-release.apk
