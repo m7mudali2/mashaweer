@@ -7,6 +7,10 @@ workflows:
       java: 21
       xcode: latest
       cocoapods: default
+      vars:
+        APP_STORE_KEY_ID: Encrypted(23VR4HRBCT)
+        APP_STORE_ISSUER_ID: Encrypted(84a94fa1-dd02-4c8f-9306-bdbe884026dc)
+        APP_STORE_KEY_FILE: AuthKey_23VR4HRBCT.p8
     cache:
       cache_paths:
         - ~/.npm
@@ -15,30 +19,24 @@ workflows:
       - name: Install dependencies
         script: |
           npm install
-
       - name: Rebuild esbuild
         script: |
           npm rebuild esbuild
-
       - name: Fix vite permissions
         script: |
           chmod +x ./node_modules/.bin/vite || true
-
       - name: Build web assets
         script: |
           npx vite build
-
       - name: Capacitor sync
         script: |
           chmod +x ./node_modules/.bin/cap || true
           npx cap sync
-
       - name: Build Android APK
         script: |
           cd android
           chmod +x gradlew
           ./gradlew assembleRelease
-
       - name: Build iOS App
         script: |
           npx cap copy ios
@@ -49,8 +47,11 @@ workflows:
       - android/app/build/outputs/apk/release/app-release.apk
       - ios/App/build/Release-iphoneos/App.app
 
-    publishing:
-      app_store_connect:
-        api_key: Mashaweer_key
-        submit_to_app_store: true
-        release_type: MANUAL
+publishing:
+  app_store_connect:
+    api_key:
+      key_id: Encrypted(23VR4HRBCT)
+      issuer_id: Encrypted(84a94fa1-dd02-4c8f-9306-bdbe884026dc)
+      key_file: AuthKey_23VR4HRBCT.p8
+    submit_to_app_store: true
+    release_type: MANUAL
