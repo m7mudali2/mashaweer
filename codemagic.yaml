@@ -50,8 +50,10 @@ workflows:
 publishing:
   app_store_connect:
     api_key:
-      key_id: Encrypted(23VR4HRBCT)
-      issuer_id: Encrypted(84a94fa1-dd02-4c8f-9306-bdbe884026dc)
-      key_file: AuthKey_23VR4HRBCT.p8
+vars:
+  APP_STORE_KEY_ID: $APP_STORE_KEY_ID
+  APP_STORE_ISSUER_ID: $APP_STORE_ISSUER_ID
+  APP_STORE_KEY_FILE: AuthKey_23VR4HRBCT.p8
+
     submit_to_app_store: true
     release_type: MANUAL
