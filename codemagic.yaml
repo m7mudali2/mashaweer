@@ -7,8 +7,10 @@ workflows:
       java: 21
       xcode: latest
       cocoapods: default
-      groups:
-        - appstore
+      vars:
+        APP_STORE_KEY_ID: Encrypted(23VR4HRBCT)
+        APP_STORE_ISSUER_ID: Encrypted(84a94fa1-dd02-4c8f-9306-bdbe884026dc)
+        APP_STORE_KEY_FILE: AuthKey_23VR4HRBCT.p8
     cache:
       cache_paths:
         - ~/.npm
@@ -53,7 +55,5 @@ workflows:
 
     publishing:
       app_store_connect:
-        credentials: Mashaweer_key
         submit_to_app_store: true
         release_type: MANUAL
-        platform: IOS
