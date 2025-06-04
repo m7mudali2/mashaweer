@@ -8,8 +8,6 @@ workflows:
       xcode: latest
       cocoapods: default
       vars:
-        APP_STORE_KEY_ID: Encrypted(95D729Q7YL)
-        APP_STORE_ISSUER_ID: Encrypted(84a94fa1-dd02-4c8f-9306-bdbe884026dc)
         APP_STORE_KEY_FILE: AuthKey_95D729Q7YL.p8
     cache:
       cache_paths:
