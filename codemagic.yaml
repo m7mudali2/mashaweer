@@ -10,7 +10,7 @@ workflows:
       vars:
         APP_STORE_KEY_ID: Encrypted(23VR4HRBCT)
         APP_STORE_ISSUER_ID: Encrypted(84a94fa1-dd02-4c8f-9306-bdbe884026dc)
-        APP_STORE_KEY_FILE: AuthKey_23VR4HRBCT.p8
+        APP_STORE_KEY_FILE: AuthKey_N49VV5JNG9.p8
     cache:
       cache_paths:
         - ~/.npm
