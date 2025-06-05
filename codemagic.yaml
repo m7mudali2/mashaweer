@@ -8,30 +8,27 @@ workflows:
       xcode: latest
       cocoapods: default
       vars:
-        APP_STORE_KEY_ID: LT427ZC687
-        APP_STORE_ISSUER_ID: 84a94fa1-dd02-4c8f-9306-bdbe884026dc
-        APP_STORE_KEY_FILE_PATH: ./AuthKey_LT427ZC687.p8
-        APP_STORE_KEY_BASE64: Encrypted(apple_key_base64) # ← أضف هذا المتغير في واجهة Codemagic
+        APP_STORE_KEY_ID: Encrypted(APP_STORE_KEY_ID)
+        APP_STORE_ISSUER_ID: Encrypted(APP_STORE_ISSUER_ID)
+        APP_STORE_KEY_FILE_PATH: ./apple_keys/AuthKey.p8
+
     cache:
       cache_paths:
         - ~/.npm
         - ~/.gradle/caches
+
     scripts:
       - name: Install dependencies
-        script: |
-          npm install
+        script: npm install
 
       - name: Rebuild esbuild
-        script: |
-          npm rebuild esbuild
+        script: npm rebuild esbuild
 
       - name: Fix vite permissions
-        script: |
-          chmod +x ./node_modules/.bin/vite || true
+        script: chmod +x ./node_modules/.bin/vite || true
 
       - name: Build web assets
-        script: |
-          npx vite build
+        script: npx vite build
 
       - name: Capacitor sync
         script: |
@@ -43,10 +40,6 @@ workflows:
           cd android
           chmod +x gradlew
           ./gradlew assembleRelease
-
-      - name: Decode Apple API Key from Base64
-        script: |
-          echo $APP_STORE_KEY_BASE64 | base64 -d > $APP_STORE_KEY_FILE_PATH
 
       - name: Build iOS App
         script: |
