@@ -64,7 +64,7 @@ const InitialInfoForm = ({ onSubmit, isLoading, initialName = '', initialPhone =
               dir="ltr" 
               required 
               pattern="^01[0-2,5]\d{8}$|^0\d{9}$" 
-              title="ادخل رقم هاتف مصري صحيح (مثال: 01234567890 أو 021234567)"
+              title="ادخل رقم هاتف مصري صحيح (مثال: 01xxxxxxxxx)"
               inputMode="tel"
               readOnly={isEditing}
               disabled={isEditing}

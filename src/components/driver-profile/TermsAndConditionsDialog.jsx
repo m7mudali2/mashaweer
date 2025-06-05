@@ -80,12 +80,17 @@ const TermsAndConditionsDialog = ({ triggerText }) => {
             استخدامك للتطبيق يكون على مسؤوليتك الخاصة.
           </p>
 
-          <h3 className="font-semibold mb-2">10. القانون الحاكم</h3>
+          <h3 className="font-semibold mb-2">10. شرط العمر</h3>
+          <p className="mb-3">
+            لا يُسمح باستخدام التطبيق لمن هم دون سن 17 عامًا. باستخدامك للتطبيق، فإنك تقر أنك تبلغ 17 عامًا أو أكثر.
+          </p>
+
+          <h3 className="font-semibold mb-2">11. القانون الحاكم</h3>
           <p className="mb-3">
             تُفسر هذه السياسة وتخضع للقوانين المحلية للدولة التي يعمل بها التطبيق.
           </p>
-
-          <h3 className="font-semibold mb-2">11. التواصل معنا</h3>
+           <h3 className="font-semibold mb-2">12. التواصل معنا</h3>
+           
           <p className="mb-3">
             لأي استفسارات متعلقة بسياسة الاستخدام، يرجى التواصل عبر البريد الإلكتروني:
             <span className="underline ms-1">info@mashaweer.online</span>
