@@ -8,9 +8,10 @@ workflows:
       xcode: latest
       cocoapods: default
       vars:
-        APP_STORE_KEY_ID: Encrypted(N49VV5JNG9)
-        APP_STORE_ISSUER_ID: Encrypted(84a94fa1-dd02-4c8f-9306-bdbe884026dc)
-        APP_STORE_KEY_FILE: AuthKey_N49VV5JNG9.p8
+        APP_STORE_KEY_ID: LT427ZC687
+        APP_STORE_ISSUER_ID: 84a94fa1-dd02-4c8f-9306-bdbe884026dc
+        APP_STORE_KEY_FILE_PATH: ./AuthKey_LT427ZC687.p8
+        APP_STORE_KEY_BASE64: Encrypted(apple_key_base64) # ← أضف هذا المتغير في واجهة Codemagic
     cache:
       cache_paths:
         - ~/.npm
@@ -43,6 +44,10 @@ workflows:
           chmod +x gradlew
           ./gradlew assembleRelease
 
+      - name: Decode Apple API Key from Base64
+        script: |
+          echo $APP_STORE_KEY_BASE64 | base64 -d > $APP_STORE_KEY_FILE_PATH
+
       - name: Build iOS App
         script: |
           npx cap copy ios
@@ -52,7 +57,7 @@ workflows:
       - name: Publish to App Store
         script: |
           app-store-connect publish \
-            --api-key-path=$CM_SECURE_FILES/$APP_STORE_KEY_FILE \
+            --api-key-path=$APP_STORE_KEY_FILE_PATH \
             --key-id=$APP_STORE_KEY_ID \
             --issuer-id=$APP_STORE_ISSUER_ID \
             --bundle-id=online.mashaweer \
