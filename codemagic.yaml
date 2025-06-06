@@ -42,4 +42,8 @@ workflows:
       - build/**/outputs/**/*.apk
 
     publishing:
-      app_store_connect: mashaweer
+      app_store_connect:
+        authentication: integration
+        name: mashaweer
+        submit_to_testflight: true
+        submit_to_app_store: false
