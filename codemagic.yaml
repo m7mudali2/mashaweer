@@ -34,7 +34,7 @@ workflows:
     artifacts:
       - android/app/build/outputs/**/*.aab
       - ios/build/Build/Products/Release-iphoneos/*.app
-      - build/**/outputs/**/*.apk
 
     publishing:
-      app_store_connect: mashaweer
+      app_store_connect:
+        authentication: integration
