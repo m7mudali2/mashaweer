@@ -6,7 +6,7 @@ workflows:
         BUNDLE_ID: "online.mashaweer"
         APP_NAME: "Mashaweer App"
       groups:
-        - appstore
+        - Appstore
       node: 18.16.0
       xcode: 15.2
       cocoapods: default
