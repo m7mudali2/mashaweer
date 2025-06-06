@@ -3,15 +3,15 @@ workflows:
     name: Build Mashaweer for Android and iOS
     environment:
       vars:
-        BUNDLE_ID: "online.mashaweer" # غيّره حسب الباكدج الحقيقي
+        BUNDLE_ID: "online.mashaweer"
         APP_NAME: "Mashaweer App"
       groups:
         - appstore
-
       node: 18.16.0
       xcode: 15.2
       cocoapods: default
       flutter: stable
+
     scripts:
       - name: Install dependencies
         script: |
@@ -38,9 +38,6 @@ workflows:
 
     publishing:
       app_store_connect:
-        auth:
-          issuer_id: $APP_STORE_CONNECT_ISSUER_ID
-          key_id: $APP_STORE_CONNECT_KEY_ID
-          private_key: $APP_STORE_PRIVATE_KEY
+        credentials: mashaweer
         submit_to_testflight: true
         submit_to_app_store: false
