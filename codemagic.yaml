@@ -12,16 +12,10 @@ workflows:
       cocoapods: default
       flutter: stable
 
-scripts:
-  - name: Install dependencies
-    script: |
-      npm install
-      npm rebuild esbuild
-  - name: Build Web App
-    script: |
-      chmod +x ./node_modules/.bin/vite || true
-      npm run build
-
+    scripts:
+      - name: Install dependencies
+        script: |
+          npm install
 
       - name: Sync Capacitor
         script: |
@@ -42,10 +36,8 @@ scripts:
       - ios/build/Build/Products/Release-iphoneos/*.app
       - build/**/outputs/**/*.apk
 
-publishing:
-  app_store_connect:
-    authentication: integration
-    name: mashaweer
-    submit_to_testflight: true
-    submit_to_app_store: false
-
+    publishing:
+      app_store_connect:
+        name: mashaweer
+      submit_to_testflight: true
+      submit_to_app_store: false
