@@ -36,4 +36,8 @@ workflows:
       - ios/build/Build/Products/Release-iphoneos/*.app
 
     publishing:
-      app_store_connect: {}
+      app_store_connect:
+        api_key:
+          key_id: 2DGVG3KFQR
+          issuer_id: 84a94fa1-dd02-4c8f-9306-bdbe884026dc
+          key: $APP_STORE_CONNECT_API_KEY
