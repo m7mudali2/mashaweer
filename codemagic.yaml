@@ -1,63 +1,46 @@
 workflows:
-  build-app:
-    name: Build App
-    max_build_duration: 60
+  Build App:
+    name: Build Mashaweer for Android and iOS
     environment:
-      node: 20.11.1
-      java: 21
-      xcode: latest
-      cocoapods: default
       vars:
-        APP_STORE_KEY_ID: Encrypted(APP_STORE_KEY_ID)
-        APP_STORE_ISSUER_ID: Encrypted(APP_STORE_ISSUER_ID)
-        APP_STORE_KEY_FILE_PATH: ./apple_keys/AuthKey.p8
+        BUNDLE_ID: "online.mashaweer" # غيّره حسب الباكدج الحقيقي
+        APP_NAME: "Mashaweer App"
+      groups:
+        - appstore
 
-    cache:
-      cache_paths:
-        - ~/.npm
-        - ~/.gradle/caches
-
+      node: 18.16.0
+      xcode: 15.2
+      cocoapods: default
+      flutter: stable
     scripts:
       - name: Install dependencies
-        script: npm install
-
-      - name: Rebuild esbuild
-        script: npm rebuild esbuild
-
-      - name: Fix vite permissions
-        script: chmod +x ./node_modules/.bin/vite || true
-
-      - name: Build web assets
-        script: npx vite build
-
-      - name: Capacitor sync
         script: |
-          chmod +x ./node_modules/.bin/cap || true
+          npm install
+      - name: Build Web App
+        script: |
+          npm run build
+      - name: Sync Capacitor
+        script: |
           npx cap sync
-
-      - name: Build Android APK
+      - name: Build Android
         script: |
           cd android
-          chmod +x gradlew
-          ./gradlew assembleRelease
-
-      - name: Build iOS App
+          ./gradlew bundleRelease
+      - name: Build iOS
         script: |
-          npx cap copy ios
-          cd ios/App
-          xcodebuild -workspace App.xcworkspace -scheme App -configuration Release -sdk iphoneos CODE_SIGN_STYLE=Automatic DEVELOPMENT_TEAM=64UP78W834 -allowProvisioningUpdates | tee build.log
-
-      - name: Publish to App Store
-        script: |
-          app-store-connect publish \
-            --api-key-path=$APP_STORE_KEY_FILE_PATH \
-            --key-id=$APP_STORE_KEY_ID \
-            --issuer-id=$APP_STORE_ISSUER_ID \
-            --bundle-id=online.mashaweer \
-            --path ios/App/build/Release-iphoneos/App.app \
-            --app-store \
-            --platform IOS
+          cd ios
+          xcodebuild -workspace App/App.xcworkspace -scheme App -configuration Release -sdk iphoneos -derivedDataPath build
 
     artifacts:
-      - android/app/build/outputs/apk/release/app-release.apk
-      - ios/App/build/Release-iphoneos/App.app
+      - android/app/build/outputs/**/*.aab
+      - ios/build/Build/Products/Release-iphoneos/*.app
+      - build/**/outputs/**/*.apk
+
+    publishing:
+      app_store_connect:
+        auth:
+          issuer_id: $APP_STORE_CONNECT_ISSUER_ID
+          key_id: $APP_STORE_CONNECT_KEY_ID
+          private_key: $APP_STORE_PRIVATE_KEY
+        submit_to_testflight: true
+        submit_to_app_store: false
