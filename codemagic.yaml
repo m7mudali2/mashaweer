@@ -42,4 +42,5 @@ workflows:
       - build/**/outputs/**/*.apk
 
     publishing:
-      app_store_connect: mashaweer
+      app_store_connect:
+        name: mashaweer
