@@ -37,9 +37,11 @@ workflows:
       - android/app/build/outputs/**/*.aab
       - ios/build/Build/Products/Release-iphoneos/*.app
 
-    publishing:
-      app_store_connect:
-        api_key:
-          key_id: 2DGVG3KFQR
-          issuer_id: 84a94fa1-dd02-4c8f-9306-bdbe884026dc
-          key: $APP_STORE_CONNECT_API_KEY
+publishing:
+  app_store_connect:
+    api_key:
+      key_id: 2DGVG3KFQR
+      issuer_id: 84a94fa1-dd02-4c8f-9306-bdbe884026dc
+      private_key: $APP_STORE_CONNECT_API_KEY
+    submit_to_testflight: false
+    submit_to_app_store: false
