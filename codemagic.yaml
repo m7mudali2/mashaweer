@@ -8,7 +8,6 @@ workflows:
         APP_NAME: "Mashaweer App"
       groups:
         - Appstore
-      # جلب أحدث LTS من Node 20
       node: 20.14.0
       xcode: 15.2
       cocoapods: default
@@ -20,13 +19,13 @@ workflows:
 
       - name: Sync Capacitor
         script: |
-          # أضف صلاحية تنفيذ ثم شغّل sync
           chmod +x node_modules/.bin/cap
           node_modules/.bin/cap sync
 
       - name: Build Android
         script: |
           cd android
+          chmod +x gradlew
           ./gradlew bundleRelease
 
       - name: Build iOS
@@ -42,8 +41,3 @@ workflows:
     artifacts:
       - android/app/build/outputs/**/*.aab
       - ios/build/Build/Products/Release-iphoneos/*.app
-
-publishing:
-  app_store_connect:
-    apple_id: "m7mudali@live.com"
-    app_specific_password: $APP_SPECIFIC_PASSWORD
